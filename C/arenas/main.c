@@ -247,7 +247,8 @@ void stack_free_all(Stack *s) { s->offset = 0; }
 void print_arena_state(struct Arena *a) {}
 
 // -------------------------------------------MAIN -------------------
-int main() {
+
+void stack_test() {
   unsigned char backing_buffer[256];
   struct Arena a = {0};
   arena_init(&a, backing_buffer, 256);
@@ -297,6 +298,35 @@ int main() {
   stack_free_all(&s);
   // Final message
   printf("Arena reset. All memory freed.\n");
+}
+
+void arena_resize_test() {
+  unsigned char buffer[256];
+  struct Arena arena;
+
+  arena_init(&arena, buffer, sizeof(buffer));
+
+  void *ptr = arena_alloc(&arena, 64);
+  printf("Initial alloc:  ptr = %p, offset = %zu\n", ptr, arena.curr_offset);
+
+  // Fill with data
+  memset(ptr, 0xAB, 64);
+
+  // Resize to 128 bytes
+  ptr = arena_resize(&arena, ptr, 64, 128);
+  printf("After resize:   ptr = %p, offset = %zu\n", ptr, arena.curr_offset);
+
+  // Optional debug: show memory content
+  printf("First 8 bytes after resize: ");
+  for (int i = 0; i < 8; i++) {
+    printf("%02X ", ((unsigned char *)ptr)[i]);
+  }
+  printf("\n");
+}
+
+int main() {
+  //  stack_test();
+  arena_resize_test();
 
   return 0;
 }

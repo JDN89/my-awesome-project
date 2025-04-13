@@ -43,6 +43,9 @@ Wat ik wil doen is de Lexer en Parser van mijn pebble project porten, AST nodes 
 | **L2 Cache**           | 3 MiB          | 6                       | Per Core                | Larger than L1, but slower. Each core has its own L2 cache for additional frequently used data or instructions. |
 | **L3 Cache**           | 32 MiB         | 1                       | Shared                  | The L3 cache is shared by all cores. It's larger than L1 and L2 but slower. It stores data shared between cores to reduce memory access time. |
 
+### resizing the arena
+Als ik de arena wil uitbreiden kan ik ipv resize gewoon een nieuwe memory chunk maken en de nieuwe arena linken aan mijn vorige. Plaats op het einde van de volle Arena een __pointer__ die naar de nieuwe chunk wijst. Eventueel ook de nieuwe chunk een pointer naar de voirge arena geven. __linked list__ van arena's
+
 ## TODO 
 - [ ] branch voor Dynamic array and Malloc and free pers AST node.
 - [ ] Branch voor arena without padding
